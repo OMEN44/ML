@@ -100,7 +100,7 @@ int main() {
 		window.clear(sf::Color::Black);
 		if (simulate) {
 			runningFlag.setFillColor(sf::Color::Green);
-			if (simulationBuffer == 1) {
+			if (simulationBuffer == 32) {
 				//Loop runs in here
 				update();
 				simulationBuffer = 0;
