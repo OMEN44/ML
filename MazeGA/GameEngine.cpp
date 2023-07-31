@@ -3,17 +3,21 @@
 const unsigned short int SCREEN_WIDTH = 600;
 const unsigned short int SCREEN_HEIGHT = 400;
 
+GameEngine::GameEngine() {}
+
+GameEngine::~GameEngine() {
+	
+}
+
 void GameEngine::render(sf::RenderWindow& window)
 {
-	std::map<std::string, sf::Drawable*>::iterator it = this->entities.begin();
-
-
-	while (it != this->entities.end())
-	{
-		window.draw(*(it->second));
-		++it;
-	}
-	
+	std::for_each(
+		this->entities.begin(),
+		this->entities.end(),
+		[&](std::pair<std::string, sf::Drawable*> keyValue) {
+			window.draw(*(this->getEntity(keyValue.first)));
+		}
+	);
 }
 
 void GameEngine::input()
@@ -30,7 +34,7 @@ void GameEngine::addEntity(std::string name, sf::Drawable* entity)
 {
 	if (!this->entities.count(name)) 
 	{
-		this->entities.insert(std::pair<std::string, sf::Drawable*>(name, entity));
+		this->entities[name] = entity;
 	} 
 	else
 	{
@@ -40,17 +44,16 @@ void GameEngine::addEntity(std::string name, sf::Drawable* entity)
 
 void GameEngine::deleteEntity(std::string name)
 {
-	if (this->entities.count(name))
+	auto it = this->entities.find(name);
+	if (it != this->entities.end())
 	{
-		this->entities.erase(name);
-	}
-	else
-	{
-		std::cout << "Nothing was removed becuase there was no entity labeled: " << name << std::endl;
+		delete it->second;
+		this->entities.erase(it);
 	}
 }
 
 sf::Drawable* GameEngine::getEntity(std::string name)
 {
-	return this->entities[name];
+	auto it = this->entities.find(name);
+	return (it != this->entities.end()) ? it->second : nullptr;
 }

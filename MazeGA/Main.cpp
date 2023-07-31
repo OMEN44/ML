@@ -11,7 +11,9 @@ int main() {
 	GameEngine game;
 
 	bool inBounds = false;
+	bool drawing = false;
 	int dotIndex = 0;
+	int brushSize = 10;
 
 	while (window.isOpen())
 	{
@@ -23,12 +25,20 @@ int main() {
 			}
 			if (event.type == sf::Event::MouseEntered) inBounds = true;
 			if (event.type == sf::Event::MouseLeft) inBounds = false;
-			if (inBounds && event.type == sf::Event::MouseButtonPressed)
+			if (event.type == sf::Event::MouseButtonPressed) drawing = true;
+			if (event.type == sf::Event::MouseButtonReleased) drawing = false;
+
+			if (event.type == sf::Event::MouseWheelMoved)
+				if (event.mouseWheel.delta == 1 && brushSize != 40) brushSize++;
+				else if (event.mouseWheel.delta == -1 && brushSize != 1) brushSize--;
+
+			if (inBounds && drawing)
 			{
-				sf::CircleShape brush(20);
-				brush.setFillColor(sf::Color::Green);
-				brush.setPosition(sf::Vector2f(sf::Mouse::getPosition(window)) + sf::Vector2f(-20, -20));
-				game.addEntity(std::to_string(dotIndex), &brush);
+				sf::CircleShape* brush = new sf::CircleShape(brushSize);
+				brush->setFillColor(sf::Color::Green);
+				brush->setPosition(sf::Vector2f(sf::Mouse::getPosition(window)) + sf::Vector2f(-brushSize, -brushSize));
+				game.addEntity(std::to_string(dotIndex), brush);
+				
 				dotIndex++;
 			}
 			

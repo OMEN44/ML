@@ -8,6 +8,9 @@ class GameEngine
 {
 	std::map<std::string, sf::Drawable*> entities;
 public:
+	GameEngine();
+	~GameEngine();
+
 	//Game operation
 	void render(sf::RenderWindow& window);
 	void input();
