@@ -133,13 +133,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Slider.cpp" />
+    <ClCompile Include="Testing.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Slider.h" />
+    <ClInclude Include="Testing.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\..\C_sharp\PhysicsSim\PhysicsSim\Resources\Arial.ttf" />
+    <Font Include="..\..\..\C_sharp\PhysicsSim\PhysicsSim\Resources\Ubuntu-Regular.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
