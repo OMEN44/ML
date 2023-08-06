@@ -134,16 +134,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Dot.cpp" />
     <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Slider.cpp" />
-    <ClCompile Include="Testing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Dot.h" />
     <ClInclude Include="GameEngine.h" />
-    <ClInclude Include="Slider.h" />
-    <ClInclude Include="Testing.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\..\C_sharp\PhysicsSim\PhysicsSim\Resources\Arial.ttf" />

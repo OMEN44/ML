@@ -14,8 +14,9 @@ public:
 	Button(float x, float y, float width, float height, sf::Color colour, sf::Texture texture);
 	void setPosition(sf::Vector2f position);
 	inline void setTexture(sf::Texture* texture);
-	inline void toggleEnabled();
-	inline bool isEnabled();
+	void toggleEnabled();
+	void enable(bool b);
+	bool isEnabled();
 	sf::RectangleShape getDrawable();
 };
 

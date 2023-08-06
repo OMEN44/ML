@@ -28,9 +28,22 @@ inline void Button::setTexture(sf::Texture* texture)
 	this->texture = texture;
 }
 
-inline void Button::toggleEnabled()
+void Button::toggleEnabled()
 {
 	this->enabled = !this->enabled;
+	if (!this->enabled)
+		this->a = 0x40;
+	else
+		this->a = 0xff;
+}
+
+void Button::enable(bool b)
+{
+	this->enabled = b;
+	if (!b)
+		this->a = 0x40;
+	else
+		this->a = 0xff;
 }
 
 void Button::setPosition(sf::Vector2f position)
@@ -38,7 +51,7 @@ void Button::setPosition(sf::Vector2f position)
 	this->position = position;
 }
 
-inline bool Button::isEnabled()
+bool Button::isEnabled()
 {
 	return this->enabled;
 }
