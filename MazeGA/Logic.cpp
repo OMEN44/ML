@@ -29,7 +29,7 @@ void GameEngine::logic()
 			//print the top 10
 			std::for_each(this->population.begin(), this->population.begin() + 10,
 				[this](Dot& dot) {
-					std::cout << GameEngine::distance(*this->finish, dot.getPosition()) << " * " << (dot.step / steps) << " = " << dot.getFitness(this->finish) << std::endl;
+					std::cout << GameEngine::distance(*this->finish, dot.getPosition()) << " * " << dot.step << "/" << steps << " = " << dot.getFitness(this->finish) << std::endl;
 				}
 			);
 			std::cout << std::endl;

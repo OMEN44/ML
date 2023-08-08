@@ -52,12 +52,12 @@ bool Dot::isAlive()
 
 bool Dot::isAlive(sf::Vector2f* goal, std::vector<sf::CircleShape*> walls)
 {
-	if ((sqrt(pow((*goal).x - this->getPosition().x, 2) + pow((*goal).y - this->getPosition().y, 2)) <= 10
+	if (goal != nullptr && (GameEngine::distance(sf::Vector2f(5, 5) + *goal, this->getPosition()) <= 10
 		|| this->step == steps
 		|| this->position.x <= 10
 		|| this->position.x >= SCREEN_WIDTH - 10
 		|| this->position.y <= 10
-		|| this->position.y >= SCREEN_HEIGHT - 10) && goal != nullptr)
+		|| this->position.y >= SCREEN_HEIGHT - 10))
 		this->alive = false;
 	std::for_each(
 		walls.begin(),
