@@ -8,18 +8,19 @@ class Dot
 	sf::Vector2f position;
 	std::vector<float> moves;
 	bool alive = true;
-	int step = 0;
 	float fitness = -1;
 public:
+	int step = 0;
 	Dot();
 	Dot(sf::Vector2f startingPosition);
 	Dot(sf::Vector2f startingPostition, std::vector<float> moves);
 
 	sf::Vector2f getPosition();
-	void takeStep(sf::CircleShape* goal, int numberOfSteps = 1);
+	void takeStep(sf::Vector2f* goal, std::vector<sf::CircleShape*> walls, int numberOfSteps = 1);
 	void mutate();
-	bool isAlive(sf::CircleShape* goal);
-	float getFitness(sf::CircleShape* goal);
+	bool isAlive(sf::Vector2f* goal, std::vector<sf::CircleShape*> walls);
+	bool isAlive();
+	float getFitness(sf::Vector2f* goal);
 	float getStep(int stepIndex);
 
 	//static methods

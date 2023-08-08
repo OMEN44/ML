@@ -15,7 +15,7 @@ void GameEngine::logic()
 		this->generatePopulation();
 	if (simulating) {
 		for (int i = 0; i < populationSize; i++)
-			this->population[i].takeStep(this->finish, 1);
+			this->population[i].takeStep(this->finish, this->walls);
 		if (this->generationDead())
 		{
 			std::sort(
@@ -27,11 +27,12 @@ void GameEngine::logic()
 			);
 
 			//print the top 10
-			/*std::for_each(this->population.begin(), this->population.begin() + 1,
+			std::for_each(this->population.begin(), this->population.begin() + 10,
 				[this](Dot& dot) {
-					std::cout << dot.getFitness(this->finish) << std::endl;
+					std::cout << GameEngine::distance(*this->finish, dot.getPosition()) << " * " << (dot.step / steps) << " = " << dot.getFitness(this->finish) << std::endl;
 				}
-			);*/
+			);
+			std::cout << std::endl;
 
 			// select the fittest
 			std::vector<Dot> fittest;
@@ -59,7 +60,7 @@ void GameEngine::logic()
 				{
 					newMoves.push_back(fittest[Dot::randI(selectionSize - 1)].getStep(i));
 				}
-				this->population.push_back(Dot(this->start->getPosition(), newMoves));
+				this->population.push_back(Dot(*this->start, newMoves));
 			}
 		}
 	}

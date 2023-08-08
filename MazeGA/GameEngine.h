@@ -8,17 +8,17 @@
 #include "Dot.h"
 
 extern float SCREEN_WIDTH, SCREEN_HEIGHT;
-extern const int selectionSize, pixelsPerStep, populationSize, steps;
-extern const float mutationRate, pi;
+extern const int selectionSize, pixelsPerStep, populationSize;
+extern const float mutationRate, pi, steps;
 
 class GameEngine
 {
 	//UI properties
-	std::map<std::string, sf::Drawable*> entities;
+	std::vector<sf::CircleShape*> walls;
 	std::map<std::string, Button*> buttons;
-	sf::Color penColour = sf::Color::Blue;
-	sf::CircleShape* start = nullptr;
-	sf::CircleShape* finish = nullptr;
+	sf::Color penColour = sf::Color::Green;
+	sf::Vector2f* start = nullptr;
+	sf::Vector2f* finish = nullptr;
 	bool inBounds = false;
 	bool drawing = false;
 	bool showControllPanel = true;
@@ -39,9 +39,6 @@ public:
 	void logic();
 
 	//entity management
-	void addEntity(std::string name, sf::Drawable* entity);
-	void deleteEntity(std::string name);
-	sf::Drawable* getEntity(std::string name);
 	void generatePopulation();
 	bool generationDead();
 

@@ -109,27 +109,30 @@ void GameEngine::input(sf::Event& e, sf::RenderWindow& window)
 		{
 			if (this->penColour == sf::Color::White)
 			{
-				std::vector<std::string> forRemoval;
-				std::for_each(
-					this->entities.begin(),
-					this->entities.end(),
-					[&](std::pair<std::string, sf::Drawable*> keyValue) {
-						if (auto circleShape = dynamic_cast<sf::CircleShape*>(this->getEntity(keyValue.first))) {
-							int r = circleShape->getRadius();
-							if (GameEngine::distance(circleShape->getPosition() + sf::Vector2f(r, r), sf::Vector2f(sf::Mouse::getPosition(window))) < r) {
-								forRemoval.push_back(keyValue.first);
-							}
+				this->walls.erase(std::remove_if(
+					this->walls.begin(),
+					this->walls.end(),
+					[&window](sf::CircleShape* wall)
+					{
+						int r = wall->getRadius();
+						if (GameEngine::distance(wall->getPosition() + sf::Vector2f(r, r), sf::Vector2f(sf::Mouse::getPosition(window))) < r) {
+							return true;
 						}
-					}
-				);
-				for (std::string s : forRemoval)
-				{
-					if (s == "start")
-						this->start = nullptr;
-					if (s == "finish")
-						this->finish = nullptr;
-					this->deleteEntity(s);
-				}
+						return false;
+					}), this->walls.end());
+				//remove start and finish
+				if (this->start != nullptr && GameEngine::distance(sf::Vector2f(sf::Mouse::getPosition(window)), (*this->start) + sf::Vector2f(10, 10)) < 10)
+					this->start = nullptr;
+				if (this->finish != nullptr && GameEngine::distance(sf::Vector2f(sf::Mouse::getPosition(window)), *this->finish + sf::Vector2f(10, 10)) < 10)
+					this->finish = nullptr;
+			}
+			else if (this->penColour == sf::Color::Green)
+			{
+				this->start = new sf::Vector2f(sf::Vector2f(sf::Mouse::getPosition(window)) + sf::Vector2f(-this->brushSize, -this->brushSize));
+			}
+			else if (this->penColour == sf::Color::Red)
+			{
+				this->finish = new sf::Vector2f(sf::Vector2f(sf::Mouse::getPosition(window)) + sf::Vector2f(-this->brushSize, -this->brushSize));
 			}
 			else
 			{
@@ -141,17 +144,17 @@ void GameEngine::input(sf::Event& e, sf::RenderWindow& window)
 				brush->setPosition(sf::Vector2f(sf::Mouse::getPosition(window)) + sf::Vector2f(-this->brushSize, -this->brushSize));
 				if (this->penColour == sf::Color::Green)
 				{
-					this->addEntity("start", brush);
-					this->start = brush;
+					sf::Vector2f v = brush->getPosition();
+					this->start = &v;
 				}
 				else if (this->penColour == sf::Color::Red)
 				{
-					this->addEntity("finish", brush);
-					this->finish = brush;
+					sf::Vector2f v = brush->getPosition();
+					this->finish = &v;
 				}
 				else
 				{
-					this->addEntity(std::to_string(dotIndex), brush);
+					this->walls.push_back(brush);
 					dotIndex++;
 				}
 

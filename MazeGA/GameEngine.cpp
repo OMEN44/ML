@@ -2,12 +2,12 @@
 
 float SCREEN_WIDTH = 800;
 float SCREEN_HEIGHT = 800;
-const int steps = 200;
-const int populationSize = 40;
-const int pixelsPerStep = 2;
+const int populationSize = 400;
+const int pixelsPerStep = 10;
 const int selectionSize = 20;
 const float mutationRate = 2;
 const float pi = 3.1415926;
+const float steps = 200;
 
 GameEngine::GameEngine()
 {
@@ -35,10 +35,10 @@ void GameEngine::renderAll(sf::RenderWindow& window)
 void GameEngine::renderDynamicObjects(sf::RenderWindow& window)
 {
 	std::for_each(
-		this->entities.begin(),
-		this->entities.end(),
-		[&](std::pair<std::string, sf::Drawable*> keyValue) {
-			window.draw(*(this->getEntity(keyValue.first)));
+		this->walls.begin(),
+		this->walls.end(),
+		[&window](sf::CircleShape* wall) {
+			window.draw(*(wall));
 		}
 	);
 	std::sort(
@@ -55,14 +55,30 @@ void GameEngine::renderDynamicObjects(sf::RenderWindow& window)
 			sf::CircleShape dotDrawable(5);
 			dotDrawable.setPosition(this->population[i].getPosition());
 			sf::Color colour = sf::Color::Magenta;
-			if (colour.a - i * 2 < 0)
+			if (!this->population[i].isAlive())
+				colour = sf::Color::Yellow;
+			else if (colour.a - i < 0)
 				colour.a = 0;
 			else
-				colour.a -= i * 2;
+				colour.a -= i;
 			dotDrawable.setFillColor(colour);
 			window.draw(dotDrawable);
 		}
 	}
+	sf::CircleShape c(10);
+	if (this->start != nullptr)
+	{
+		c.setPosition(*this->start);
+		c.setFillColor(sf::Color::Green);
+		window.draw(c);
+	}
+	if (this->finish != nullptr)
+	{
+		c.setPosition(*this->finish);
+		c.setFillColor(sf::Color::Red);
+		window.draw(c);
+	}
+
 }
 
 void GameEngine::renderStaticObjects(sf::RenderWindow& window)
@@ -116,44 +132,16 @@ void GameEngine::renderStaticObjects(sf::RenderWindow& window)
 	}
 }
 
-void GameEngine::addEntity(std::string name, sf::Drawable* entity)
-{
-	if (!this->entities.count(name))
-	{
-		this->entities[name] = entity;
-	}
-	else
-	{
-		std::cout << "Didn't add entity: " << name << " Becuase it already exists." << std::endl;
-	}
-}
-
-void GameEngine::deleteEntity(std::string name)
-{
-	auto it = this->entities.find(name);
-	if (it != this->entities.end())
-	{
-		this->entities.erase(it);
-	}
-}
-
-sf::Drawable* GameEngine::getEntity(std::string name)
-{
-	auto it = this->entities.find(name);
-	return (it != this->entities.end()) ? it->second : nullptr;
-}
-
 void GameEngine::generatePopulation()
 {
-	float r = this->start->getRadius();
 	for (int i = 0; i < populationSize; i++)
-		this->population.push_back(Dot(this->start->getPosition() + sf::Vector2f(r/2, r/2)));
+		this->population.push_back(Dot(*this->start + sf::Vector2f(10/2, 10/2)));
 }
 
 bool GameEngine::generationDead()
 {
 	for (Dot dot : this->population)
-		if (dot.isAlive(this->finish))
+		if (dot.isAlive(this->finish, this->walls))
 			return false;
 	return true;
 }

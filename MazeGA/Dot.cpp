@@ -21,18 +21,21 @@ sf::Vector2f Dot::getPosition()
 	return this->position;
 }
 
-void Dot::takeStep(sf::CircleShape* goal, int numberOfSteps)
+void Dot::takeStep(sf::Vector2f* goal, std::vector<sf::CircleShape*> walls, int numberOfSteps)
 {
-	if (!this->isAlive(goal)) return;
-	if (numberOfSteps + this->step >= steps)
+	if (!this->isAlive(goal, walls)) return;
+	if (numberOfSteps + this->step > steps)
+	{
+		std::cout << "died" << std::endl;
 		this->alive = false;
+	}
 	else 
 	{
-		this->step += numberOfSteps;
 		this->position = sf::Vector2f(
 			this->position.x + pixelsPerStep * cos(this->moves[this->step] * (pi / 180)),
 			this->position.y + pixelsPerStep * sin(this->moves[this->step] * (pi / 180))
 		);
+		this->step += numberOfSteps;
 	}
 }
 
@@ -42,23 +45,43 @@ void Dot::mutate()
 		this->moves[i] *= Dot::randF(1 - (mutationRate / 100), 1 + (mutationRate / 100));
 }
 
-bool Dot::isAlive(sf::CircleShape* goal)
+bool Dot::isAlive()
 {
-	if (sqrt(pow(goal->getPosition().x - this->getPosition().x, 2) + pow(goal->getPosition().x - this->getPosition().x, 2)) <= goal->getRadius()
+	return this->alive;
+}
+
+bool Dot::isAlive(sf::Vector2f* goal, std::vector<sf::CircleShape*> walls)
+{
+	if ((sqrt(pow((*goal).x - this->getPosition().x, 2) + pow((*goal).y - this->getPosition().y, 2)) <= 10
 		|| this->step == steps
 		|| this->position.x <= 10
 		|| this->position.x >= SCREEN_WIDTH - 10
 		|| this->position.y <= 10
-		|| this->position.y >= SCREEN_HEIGHT - 10)
-		this->alive = true;
-	//check for collisons with wall.
-	std::cout << "alive!!" << step << std::endl;
+		|| this->position.y >= SCREEN_HEIGHT - 10) && goal != nullptr)
+		this->alive = false;
+	std::for_each(
+		walls.begin(),
+		walls.end(),
+		[this](sf::CircleShape* wall)
+		{
+			if (GameEngine::distance(
+				sf::Vector2f(wall->getRadius(), wall->getRadius()) + wall->getPosition(),
+				sf::Vector2f(5, 5) + this->getPosition()
+			) <= wall->getRadius())
+			{
+				this->alive = false;
+			}
+		}
+	);
+
+	
 	return this->alive;
 }
 
-float Dot::getFitness(sf::CircleShape* goal) 
+float Dot::getFitness(sf::Vector2f* goal) 
 {
-	this->fitness = abs(1.0 / sqrt(pow(goal->getPosition().x - this->getPosition().x, 2) + pow(goal->getPosition().x - this->getPosition().x, 2)));
+	if (goal != nullptr)
+		this->fitness = abs(1.0 / GameEngine::distance(*goal, this->position) * (step / steps));
 	return this->fitness;
 }
 
