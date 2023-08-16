@@ -36,6 +36,9 @@
     <ClCompile Include="Logic.cpp">
       <Filter>Source Files\Game engine</Filter>
     </ClCompile>
+    <ClCompile Include="Slider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Slider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

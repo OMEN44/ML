@@ -2,6 +2,21 @@
 
 void GameEngine::input(sf::Event& e, sf::RenderWindow& window)
 {
+	std::for_each(
+		this->sliders.begin(),
+		this->sliders.end(),
+		[&](std::pair<std::string, Slider*> keyValue) {
+			keyValue.second->logic(window);
+			if (keyValue.first == "population")
+				populationSize = keyValue.second->getValue();
+			else if (keyValue.first == "mutation")
+				mutationRate = keyValue.second->getValue();
+			else if (keyValue.first == "selection")
+				selectionSize = keyValue.second->getValue();
+			else if (keyValue.first == "step")
+				pixelsPerStep = keyValue.second->getValue();
+		}
+	);
 	while (window.pollEvent(e))
 	{
 		switch (e.type) {
@@ -15,7 +30,7 @@ void GameEngine::input(sf::Event& e, sf::RenderWindow& window)
 			this->inBounds = false;
 			break;
 		case sf::Event::MouseButtonPressed:
-			if (this->showControllPanel)
+			if (sf::Mouse::getPosition(window).y > SCREEN_HEIGHT - 50.0f)
 			{
 				std::for_each(
 					this->buttons.begin(),
@@ -97,15 +112,13 @@ void GameEngine::input(sf::Event& e, sf::RenderWindow& window)
 			switch (e.key.code)
 			{
 			case sf::Keyboard::Space:
-				this->showControllPanel = !this->showControllPanel;
+				//
 				break;
 			}
 			break;
 		}
 
-
-
-		if (this->inBounds && this->drawing && !this->showControllPanel)
+		if (this->inBounds && this->drawing && sf::Mouse::getPosition(window).y < SCREEN_HEIGHT - 50.0f)
 		{
 			if (this->penColour == sf::Color::White)
 			{

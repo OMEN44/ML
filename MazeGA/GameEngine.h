@@ -5,23 +5,24 @@
 #include <vector>
 #include <random>
 #include "Button.h"
+#include "Slider.h"
 #include "Dot.h"
 
-extern float SCREEN_WIDTH, SCREEN_HEIGHT;
-extern const int selectionSize, pixelsPerStep, populationSize;
-extern const float mutationRate, pi, steps;
+extern float mutationRate, SCREEN_WIDTH, SCREEN_HEIGHT;
+extern int selectionSize, pixelsPerStep, populationSize;
+extern const float pi, steps;
 
 class GameEngine
 {
 	//UI properties
 	std::vector<sf::CircleShape*> walls;
 	std::map<std::string, Button*> buttons;
+	std::map<std::string, Slider*> sliders;
 	sf::Color penColour = sf::Color::Green;
 	sf::Vector2f* start = nullptr;
 	sf::Vector2f* finish = nullptr;
 	bool inBounds = false;
 	bool drawing = false;
-	bool showControllPanel = true;
 	int dotIndex = 0;
 	int brushSize = 10;
 	//Genetic algorithm

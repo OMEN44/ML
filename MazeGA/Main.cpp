@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include "GameEngine.h"
+#include "Slider.h"
 
 int main() {
 
@@ -18,11 +19,6 @@ int main() {
 
 	sf::Font f;
 	f.loadFromFile("C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\Arial.ttf");
-
-	sf::Texture t;
-	t.loadFromFile("C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\play.png");
-
-
 
 	while (window.isOpen())
 	{

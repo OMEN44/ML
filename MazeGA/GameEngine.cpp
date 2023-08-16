@@ -1,11 +1,11 @@
 #include "GameEngine.h"
 
-float SCREEN_WIDTH = 800;
+float SCREEN_WIDTH = 1000;
 float SCREEN_HEIGHT = 800;
-const int populationSize = 400;
-const int pixelsPerStep = 10;
-const int selectionSize = 20;
-const float mutationRate = 2;
+float mutationRate = 2;
+int populationSize = 400;
+int pixelsPerStep = 10;
+int selectionSize = 20;
 const float pi = 3.1415926;
 const float steps = 200;
 
@@ -17,11 +17,16 @@ GameEngine::GameEngine()
 	this->buttons["play"] = new Button(0, 0, 40, 40, sf::Color::Blue, "C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\MazeGa\\play.png");
 	this->buttons["reset"] = new Button(0, 0, 40, 40, sf::Color::Green, "C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\MazeGa\\reset.png");
 	// add buttons for pen
-	this->buttons["wall"] = new Button(0, 0, 30, 30, sf::Color::Blue, "C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\MazeGa\\wall.png");
-	this->buttons["start"] = new Button(0, 0, 30, 30, sf::Color::Green, "C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\MazeGa\\start.png");
-	this->buttons["finish"] = new Button(0, 0, 30, 30, sf::Color::Red, "C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\MazeGa\\finish.png");
-	this->buttons["eraser"] = new Button(0, 0, 30, 30, sf::Color::White, "C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\MazeGa\\eraser.png");
+	this->buttons["wall"] = new Button(0, 0, 40, 40, sf::Color::Blue, "C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\MazeGa\\wall.png");
+	this->buttons["start"] = new Button(0, 0, 40, 40, sf::Color::Green, "C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\MazeGa\\start.png");
+	this->buttons["finish"] = new Button(0, 0, 40, 40, sf::Color::Red, "C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\MazeGa\\finish.png");
+	this->buttons["eraser"] = new Button(0, 0, 40, 40, sf::Color::White, "C:\\Users\\huons\\OneDrive\\Documents\\programming\\Resources\\MazeGa\\eraser.png");
 	this->buttons["play"]->enable(false);
+	//sliders
+	this->sliders["population"] = new Slider(sf::Vector2f(350, SCREEN_HEIGHT - 25), "Population", 50, 1000);
+	this->sliders["mutation"] = new Slider(sf::Vector2f(500, SCREEN_HEIGHT - 25), "Mutation rate", 1, 100);
+	this->sliders["selection"] = new Slider(sf::Vector2f(650, SCREEN_HEIGHT - 25), "Selection size", 10, 100);
+	this->sliders["step"] = new Slider(sf::Vector2f(800, SCREEN_HEIGHT - 25), "Step size", 1, 20);
 }
 
 GameEngine::~GameEngine() {}
@@ -84,52 +89,40 @@ void GameEngine::renderDynamicObjects(sf::RenderWindow& window)
 void GameEngine::renderStaticObjects(sf::RenderWindow& window)
 {
 	//background
-	sf::RectangleShape background(sf::Vector2f(SCREEN_WIDTH, 200));
+	sf::RectangleShape background(sf::Vector2f(SCREEN_WIDTH, 50));
 	background.setFillColor(sf::Color(0x353535ff));
-	background.setPosition(sf::Vector2f(0.0f, SCREEN_HEIGHT - 200.0f));
+	background.setPosition(sf::Vector2f(0.0f, SCREEN_HEIGHT - 50.0f));
 
-	//controll panel 1
-	sf::RectangleShape panel1(sf::Vector2f(180, 180));
-	panel1.setPosition(sf::Vector2f(SCREEN_WIDTH / 2.0f - 185.0f, SCREEN_HEIGHT - 190.0f));
-	panel1.setFillColor(sf::Color(0x263535ff));
-	panel1.setOutlineColor(sf::Color::Black);
-	panel1.setOutlineThickness(3);
-
-	//controll panel 2
-	sf::RectangleShape panel2(sf::Vector2f(180, 180));
-	panel2.setPosition(sf::Vector2f(SCREEN_WIDTH / 2.0f + 5.0f, SCREEN_HEIGHT - 190.0f));
-	panel2.setFillColor(sf::Color(0x263535ff));
-	panel2.setOutlineColor(sf::Color::Black);
-	panel2.setOutlineThickness(3);
-
-
-	if (this->showControllPanel)
-	{
-		window.draw(background);
-		window.draw(panel1);
-		window.draw(panel2);
-		std::for_each(
-			this->buttons.begin(),
-			this->buttons.end(),
-			[&](std::pair<std::string, Button*> keyValue) {
-				sf::Vector2f position(0, 0);
-				if (keyValue.first == "play")
-					position = sf::Vector2f(SCREEN_WIDTH / 2 - 175, SCREEN_HEIGHT - 60);
-				else if (keyValue.first == "reset")
-					position = sf::Vector2f(SCREEN_WIDTH / 2 - 125, SCREEN_HEIGHT - 60);
-				else if (keyValue.first == "eraser")
-					position = sf::Vector2f(SCREEN_WIDTH / 2 + 20, SCREEN_HEIGHT - 50);
-				else if (keyValue.first == "finish")
-					position = sf::Vector2f(SCREEN_WIDTH / 2 + 60, SCREEN_HEIGHT - 50);
-				else if (keyValue.first == "start")
-					position = sf::Vector2f(SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT - 50);
-				else if (keyValue.first == "wall")
-					position = sf::Vector2f(SCREEN_WIDTH / 2 + 140, SCREEN_HEIGHT - 50);
-				keyValue.second->setPosition(position);
-				window.draw(keyValue.second->getDrawable());
-			}
-		);
-	}
+	window.draw(background);
+	std::for_each(
+		this->buttons.begin(),
+		this->buttons.end(),
+		[&](std::pair<std::string, Button*> keyValue) {
+			sf::Vector2f position(0, 0);
+			if (keyValue.first == "play")
+				position = sf::Vector2f(5, SCREEN_HEIGHT - 45);
+			else if (keyValue.first == "reset")
+				position = sf::Vector2f(55, SCREEN_HEIGHT - 45);
+			else if (keyValue.first == "eraser")
+				position = sf::Vector2f(105, SCREEN_HEIGHT - 45);
+			else if (keyValue.first == "finish")
+				position = sf::Vector2f(155, SCREEN_HEIGHT - 45);
+			else if (keyValue.first == "start")
+				position = sf::Vector2f(205, SCREEN_HEIGHT - 45);
+			else if (keyValue.first == "wall")
+				position = sf::Vector2f(255, SCREEN_HEIGHT - 45);
+			keyValue.second->setPosition(position);
+			window.draw(keyValue.second->getDrawable());
+		}
+	);
+	std::for_each(
+		this->sliders.begin(),
+		this->sliders.end(),
+		[&](std::pair<std::string, Slider*> keyValue) {
+			keyValue.second->setPosition(sf::Vector2f(keyValue.second->getPosition().x, SCREEN_HEIGHT - 25));
+			keyValue.second->draw(window);
+		}
+	);
 }
 
 void GameEngine::generatePopulation()

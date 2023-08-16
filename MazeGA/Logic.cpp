@@ -14,7 +14,8 @@ void GameEngine::logic()
 	if (simulating && this->population.size() == 0)
 		this->generatePopulation();
 	if (simulating) {
-		for (int i = 0; i < populationSize; i++)
+		
+		for (int i = 0; i < this->population.size(); i++)
 			this->population[i].takeStep(this->finish, this->walls);
 		if (this->generationDead())
 		{
@@ -36,9 +37,12 @@ void GameEngine::logic()
 
 			// select the fittest
 			std::vector<Dot> fittest;
+			float end = selectionSize;
+			if (selectionSize > populationSize)
+				end = populationSize;
 			std::copy(
 				this->population.begin(),
-				this->population.begin() + selectionSize,
+				this->population.begin() + end,
 				std::back_inserter(fittest)
 			);
 			this->population.clear();
@@ -58,7 +62,10 @@ void GameEngine::logic()
 				std::vector<float> newMoves;
 				for (int i = 0; i < steps; i++)
 				{
-					newMoves.push_back(fittest[Dot::randI(selectionSize - 1)].getStep(i));
+					if (selectionSize > populationSize)
+						newMoves.push_back(fittest[Dot::randI(populationSize - 1)].getStep(i));
+					else
+						newMoves.push_back(fittest[Dot::randI(selectionSize - 1)].getStep(i));
 				}
 				this->population.push_back(Dot(*this->start, newMoves));
 			}
