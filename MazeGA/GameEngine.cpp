@@ -73,15 +73,29 @@ void GameEngine::renderDynamicObjects(sf::RenderWindow& window)
 	sf::CircleShape c(10);
 	if (this->start != nullptr)
 	{
-		c.setPosition(*this->start);
-		c.setFillColor(sf::Color::Green);
-		window.draw(c);
+		if (this->start->x < SCREEN_WIDTH && this->start->y < SCREEN_HEIGHT)
+		{
+			c.setPosition(*this->start);
+			c.setFillColor(sf::Color::Green);
+			window.draw(c);
+		}
+		else
+		{
+			this->simulating = false;
+		}
 	}
 	if (this->finish != nullptr)
 	{
-		c.setPosition(*this->finish);
-		c.setFillColor(sf::Color::Red);
-		window.draw(c);
+		if (this->finish->x < SCREEN_WIDTH && this->finish->y < SCREEN_HEIGHT)
+		{
+			c.setPosition(*this->finish);
+			c.setFillColor(sf::Color::Red);
+			window.draw(c);
+		}
+		else
+		{
+			this->simulating = false;
+		}
 	}
 
 }
