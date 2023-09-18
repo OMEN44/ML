@@ -41,7 +41,7 @@ void RenderObject::addBodyMember(sf::Shape* member)
 	this->body.push_back(member);
 }
 
-std::vector<sf::Shape*> RenderObject::getBody() const
+std::vector<sf::Shape*>& RenderObject::getBody()
 {
 	return this->body;
 }

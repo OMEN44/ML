@@ -20,6 +20,13 @@ Game::~Game()
 		[](std::pair<std::string, RenderObject*> drawable) {
 			delete drawable.second;
 		}
+	); 
+	std::for_each(
+		this->genericObjects.begin(),
+		this->genericObjects.end(),
+		[](RenderObject* drawable) {
+			delete drawable;
+		}
 	);
 }
 
@@ -106,8 +113,17 @@ void Game::addObject(std::string name, RenderObject* object)
 void Game::delObject(std::string name)
 {
 	if (this->uniqueObjects.count(name))
+	{
+		delete this->uniqueObjects[name];
 		this->uniqueObjects.erase(name);
+	}
 	else std::cout << "Object does not exist!" << std::endl;
+}
+
+void Game::delObject(int index)
+{
+	delete this->genericObjects[index];
+	this->genericObjects.erase(this->genericObjects.begin() + index);
 }
 
 RenderObject* Game::getObject(std::string name)
@@ -128,11 +144,11 @@ void Game::addObject(RenderObject* object)
  	this->genericObjects.push_back(object);
 }
 
-bool Game::objectCollision(const RenderObject& object1, const RenderObject& object2)
+bool Game::objectCollision(RenderObject& object1, RenderObject& object2)
 {
-	for (const auto& shape1 : object1.getBody()) {
+	for (auto& shape1 : object1.getBody()) {
 		sf::FloatRect bounds1 = shape1->getGlobalBounds();
-		for (const auto& shape2 : object2.getBody()) {
+		for (auto& shape2 : object2.getBody()) {
 			sf::FloatRect bounds2 = shape2->getGlobalBounds();
 
 			if (bounds1.intersects(bounds2))

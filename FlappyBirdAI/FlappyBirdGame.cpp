@@ -9,7 +9,7 @@ void FlappyBirdGame::start()
 {
 	RenderObject *bird = new Player();
 	addObject("player", bird);
-	RenderObject* pipe = new Pipe(200);
+	RenderObject *pipe = new Pipe(200);
 	addObject(pipe);
 }
 
@@ -27,13 +27,13 @@ void FlappyBirdGame::beforeUpdate()
 		bird->velocity = -0.5;
 	}
 
-	if (this->wallCounter == 150)
+	if (this->wallCounter == 175)
 	{
 		addObject(new Pipe(200 - wallId * 3));
 		this->wallCounter = 0;
 		this->wallId++;
-		if (this->getGenericObjects().size() > 20)
-			this->getGenericObjects().erase(this->getGenericObjects().begin());
+		if (this->getGenericObjects().size() > 5)
+			this->delObject(0);
 		this->score++;
 		std::cout << this->score << std::endl;
 	}
@@ -53,7 +53,6 @@ void FlappyBirdGame::onKeyPress(sf::Event& e)
 	{
 		dynamic_cast<Player*>(this->getObject("player"))->flap();
 		this->flapping = true;
-		std::cout << "flying" << std::endl;
 	}
 }
 

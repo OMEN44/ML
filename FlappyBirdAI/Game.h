@@ -32,7 +32,7 @@ public:
 	void setPosition(sf::Vector2f position);
 	sf::Vector2f getPosition();
 	void addBodyMember(sf::Shape* member);
-	std::vector<sf::Shape*> getBody() const;
+	std::vector<sf::Shape*>& getBody();
 
 private:
 	sf::Vector2f position;
@@ -72,9 +72,10 @@ public:
 	void addObject(std::string name, RenderObject* object);
 	void addObject(RenderObject* object);
 	void delObject(std::string name);
+	void delObject(int index);
 	RenderObject* getObject(std::string name);
 	std::vector<RenderObject*> getGenericObjects();
-	bool objectCollision(const RenderObject& object1, const RenderObject& object2);
+	bool objectCollision(RenderObject& object1, RenderObject& object2);
 	bool objectCollision(const std::string& objectName1, const std::string& objectName2);
 	bool objectCollisionWithGeneric(const std::string& objectName);
 
