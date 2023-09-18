@@ -9,11 +9,14 @@ private:
 	int wallCounter = 0;
 	int wallId = 1;
 	int score = 0;
+	bool flapping = false;
 public:
 	FlappyBirdGame(std::string title, int frameRateLimit);
 	void start() override;
-	void onInput() override;
+	void onInput(sf::Event& e) override;
 	void beforeUpdate() override;
+	void onKeyPress(sf::Event& e) override;
+	void onKeyRelease(sf::Event& e) override;
 
 	void onPause() override;
 	void pauseInput() override;

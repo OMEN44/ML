@@ -13,10 +13,9 @@ void FlappyBirdGame::start()
 	addObject(pipe);
 }
 
-void FlappyBirdGame::onInput()
+void FlappyBirdGame::onInput(sf::Event& e)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-		dynamic_cast<Player*>(this->getObject("player"))->flap();
+
 }
 
 void FlappyBirdGame::beforeUpdate()
@@ -46,6 +45,24 @@ void FlappyBirdGame::beforeUpdate()
 	//check collisions
 	if (this->objectCollisionWithGeneric("player"))
 		this->pause();
+}
+
+void FlappyBirdGame::onKeyPress(sf::Event& e)
+{
+	if (e.key.code == sf::Keyboard::Space && !this->flapping)
+	{
+		dynamic_cast<Player*>(this->getObject("player"))->flap();
+		this->flapping = true;
+		std::cout << "flying" << std::endl;
+	}
+}
+
+void FlappyBirdGame::onKeyRelease(sf::Event& e)
+{
+	if (e.key.code == sf::Keyboard::Space)
+	{
+		this->flapping = false;
+	}
 }
 
 void FlappyBirdGame::onPause()

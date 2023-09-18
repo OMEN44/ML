@@ -82,7 +82,9 @@ public:
 	virtual void beforeUpdate();
 	virtual void onUpdate();
 	virtual void onRender();
-	virtual void onInput();
+	virtual void onInput(sf::Event& e);
+	virtual void onKeyPress(sf::Event& e);
+	virtual void onKeyRelease(sf::Event &e);
 
 	virtual void onPause();
 	virtual void pauseInput();

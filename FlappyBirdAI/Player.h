@@ -3,6 +3,8 @@
 
 class Player : public RenderObject
 {
+private:
+	bool isAlive = false;
 public:
 	float velocity = 0;
 	Player();

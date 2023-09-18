@@ -22,6 +22,7 @@ void Player::onCreate()
 	wing.setOutlineColor(sf::Color::Black);
 	wing.setOutlineThickness(6);
 	this->addBodyMember(new sf::CircleShape(wing));
+	this->isAlive = true;
 }
 
 void Player::onUpdate(sf::Time deltaTime)

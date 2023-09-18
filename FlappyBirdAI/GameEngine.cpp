@@ -33,8 +33,6 @@ void Game::run()
 	{
 		if (!paused)
 		{
-			this->onInput();
-
 			sf::Time frameTime = clock.restart();
 			accumulator += frameTime;
 
@@ -62,12 +60,22 @@ void Game::run()
 			case sf::Event::Closed:
 				this->window.close();
 				break;
+			case sf::Event::KeyPressed:
+				this->onKeyPress(e);
+				break;
+			case sf::Event::KeyReleased:
+				this->onKeyRelease(e);
+				break;
 			case sf::Event::Resized:
+			{
 				sf::Vector2f size(e.size.width, e.size.height);
 				sf::FloatRect visibleArea(sf::Vector2f(0, 0), size);
 				this->window.setView(sf::View(visibleArea));
 				screenHeight = size.y;
 				screenWidth = size.x;
+			}
+			default:
+				this->onInput(e);
 				break;
 			}
 		}
@@ -163,16 +171,6 @@ std::vector<RenderObject*> Game::getGenericObjects()
 	return this->genericObjects;
 }
 
-void Game::start()
-{
-
-}
-
-void Game::beforeUpdate()
-{
-	
-}
-
 void Game::onUpdate()
 {
 	std::for_each(
@@ -211,22 +209,14 @@ void Game::onRender()
 	window.display();
 }
 
-void Game::onInput()
-{
-}
+void Game::start() {}
+void Game::beforeUpdate() {}
+void Game::onInput(sf::Event& e) {}
+void Game::onKeyRelease(sf::Event &e) {}
+void Game::onKeyPress(sf::Event& e) {}
 
-void Game::onPause()
-{
-}
 
-void Game::pauseInput()
-{
-}
-
-void Game::pauseRender()
-{
-}
-
-void Game::pauseUpdate()
-{
-}
+void Game::onPause() {}
+void Game::pauseInput() {}
+void Game::pauseRender() {}
+void Game::pauseUpdate() {}
