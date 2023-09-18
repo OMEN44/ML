@@ -13,14 +13,14 @@ private:
 public:
 	FlappyBirdGame(std::string title, int frameRateLimit);
 	void start() override;
-	void onInput(sf::Event& e) override;
+	//void onInput(sf::Event& e) override;
 	void beforeUpdate() override;
 	void onKeyPress(sf::Event& e) override;
 	void onKeyRelease(sf::Event& e) override;
 
-	void onPause() override;
+	//void onPause() override;
 	void pauseInput() override;
-	void pauseUpdate() override;
-	void pauseRender() override;
+	//void pauseUpdate() override;
+	//void pauseRender() override;
 };
 

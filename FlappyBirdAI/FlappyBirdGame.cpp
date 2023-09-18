@@ -13,11 +13,6 @@ void FlappyBirdGame::start()
 	addObject(pipe);
 }
 
-void FlappyBirdGame::onInput(sf::Event& e)
-{
-
-}
-
 void FlappyBirdGame::beforeUpdate()
 {
 	Player* bird = dynamic_cast<Player*>(this->getObject("player"));
@@ -58,14 +53,7 @@ void FlappyBirdGame::onKeyPress(sf::Event& e)
 
 void FlappyBirdGame::onKeyRelease(sf::Event& e)
 {
-	if (e.key.code == sf::Keyboard::Space)
-	{
-		this->flapping = false;
-	}
-}
-
-void FlappyBirdGame::onPause()
-{
+	this->flapping = !(e.key.code == sf::Keyboard::Space);
 }
 
 void FlappyBirdGame::pauseInput()
@@ -74,12 +62,4 @@ void FlappyBirdGame::pauseInput()
 	{
 		this->end();
 	}
-}
-
-void FlappyBirdGame::pauseUpdate()
-{
-}
-
-void FlappyBirdGame::pauseRender()
-{
 }
