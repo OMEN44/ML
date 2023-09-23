@@ -9,15 +9,21 @@ void Pipe::onCreate()
 	std::uniform_int_distribution<int> distribution(0, screenHeight - this->gapSize);
 	int height = distribution(gen);
 		
+	this->setPosition(sf::Vector2f(screenWidth, height));
 	sf::RectangleShape rec(sf::Vector2f(75, 1000));
 	rec.setFillColor(sf::Color::Green);
-	rec.setPosition(screenWidth, height - 1000);
+	rec.setPosition(0, -1000);
 	this->addBodyMember(new sf::RectangleShape(rec));
-	rec.setPosition(screenWidth, height + this->gapSize);
+	rec.setPosition(0, this->gapSize);
 	this->addBodyMember(new sf::RectangleShape(rec));
 }
 
 void Pipe::onUpdate(sf::Time deltaTime)
 {
 	this->move(sf::Vector2f(-2, 0));
+}
+
+int Pipe::getGapSize()
+{
+	return this->gapSize;
 }

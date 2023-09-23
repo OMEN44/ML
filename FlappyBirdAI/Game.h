@@ -74,6 +74,7 @@ public:
 	void delObject(std::string name);
 	void delObject(int index);
 	RenderObject* getObject(std::string name);
+	RenderObject* getObject(int index);
 	std::vector<RenderObject*> getGenericObjects();
 	bool objectCollision(RenderObject& object1, RenderObject& object2);
 	bool objectCollision(const std::string& objectName1, const std::string& objectName2);
@@ -82,6 +83,7 @@ public:
 	virtual void start();
 	virtual void beforeUpdate();
 	virtual void onUpdate();
+	virtual void beforeRender();
 	virtual void onRender();
 	virtual void onInput(sf::Event& e);
 	virtual void onKeyPress(sf::Event& e);

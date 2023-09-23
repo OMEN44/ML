@@ -50,7 +50,10 @@ void Game::run()
 				accumulator -= this->deltaTime;
 			}
 
+			window.clear(sf::Color::Black);
+			this->beforeRender();
 			this->onRender();
+			window.display();
 		}
 		else
 		{
@@ -138,6 +141,15 @@ RenderObject* Game::getObject(std::string name)
 	return nullptr;
 }
 
+RenderObject* Game::getObject(int index)
+{
+	if (this->genericObjects.size() < index)
+		std::cout << "Object does not exist!" << std::endl;
+	else
+		return this->genericObjects[index];
+	return nullptr;
+}
+
 void Game::addObject(RenderObject* object)
 {
 	object->onCreate();
@@ -207,7 +219,6 @@ void Game::onUpdate()
 
 void Game::onRender()
 {
-	window.clear(sf::Color::Black);
 	std::for_each(
 		this->uniqueObjects.begin(),
 		this->uniqueObjects.end(),
@@ -222,9 +233,9 @@ void Game::onRender()
 			object->onRender(this->window);
 		}
 	);
-	window.display();
 }
 
+void Game::beforeRender() {}
 void Game::start() {}
 void Game::beforeUpdate() {}
 void Game::onInput(sf::Event& e) {}

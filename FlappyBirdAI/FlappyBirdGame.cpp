@@ -1,65 +1,53 @@
 #include "FlappyBirdGame.h"
 
 FlappyBirdGame::FlappyBirdGame(std::string title, int frameRateLimit)
-	: Game(title, frameRateLimit)
+	: Game(title, frameRateLimit),
+	population(100)
 {
 }
 
 void FlappyBirdGame::start()
 {
-	RenderObject *bird = new Player();
-	addObject("player", bird);
-	RenderObject *pipe = new Pipe(200);
-	addObject(pipe);
 }
 
 void FlappyBirdGame::beforeUpdate()
 {
-	Player* bird = dynamic_cast<Player*>(this->getObject("player"));
-	if (bird->getPosition().y > screenHeight - 50)
+	//gen walls
+	if (this->wallGenBuffer == 175)
 	{
-		bird->setPosition(sf::Vector2f(100, screenHeight - 50));
-		bird->velocity = -0.5;
-	}
-
-	if (this->wallCounter == 175)
-	{
-		addObject(new Pipe(200 - wallId * 3));
-		this->wallCounter = 0;
-		this->wallId++;
-		if (this->getGenericObjects().size() > 5)
-			this->delObject(0);
-		this->score++;
-		std::cout << this->score << std::endl;
+		addObject(new Pipe(200 - this->level * 3));
+		this->wallGenBuffer = 0;
+		this->level++;
 	}
 	else
 	{
-		this->wallCounter++;
+		this->wallGenBuffer++;
 	}
 
-	//check collisions
-	if (this->objectCollisionWithGeneric("player"))
-		this->pause();
+	//remove old pipes
+	for (int i = 0; i < this->getGenericObjects().size(); i++)
+		if (this->getObject(i)->getPosition().x <= -75)
+			this->delObject(i);
+	
+	if (!this->population.allDead())
+	{
+		this->population.update(this->getGenericObjects());
+	}
+	else
+	{
+		this->population.reset();
+	}
 }
 
 void FlappyBirdGame::onKeyPress(sf::Event& e)
-{
-	if (e.key.code == sf::Keyboard::Space && !this->flapping)
-	{
-		dynamic_cast<Player*>(this->getObject("player"))->flap();
-		this->flapping = true;
-	}
-}
-
-void FlappyBirdGame::onKeyRelease(sf::Event& e)
-{
-	this->flapping = !(e.key.code == sf::Keyboard::Space);
-}
-
-void FlappyBirdGame::pauseInput()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
 		this->end();
 	}
+}
+
+void FlappyBirdGame::beforeRender()
+{
+	this->population.render(this->window);
 }

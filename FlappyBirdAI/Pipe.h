@@ -12,5 +12,6 @@ public:
 	Pipe(int gapSize);
 	void onCreate() override;
 	void onUpdate(sf::Time deltaTime) override;
+	int getGapSize();
 };
 
