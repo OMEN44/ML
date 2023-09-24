@@ -12,7 +12,7 @@ void Population::reset()
 {
 	for (auto& bird : this->population)
 	{
-		bird.crossOver();
+		bird.crossOver(this->population);
 		bird.reset();
 	}
 }

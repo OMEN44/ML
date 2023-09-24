@@ -11,7 +11,7 @@ class Bird
 private:
 	sf::Vector2f position;
 	std::vector<std::vector<std::vector<float>>> weights;
-	std::vector<std::vector<float>> neuronBias;
+	//std::vector<std::vector<float>> neuronBias;
 	std::vector<unsigned short> topology;
 	float velocity;
 	unsigned fitness;
@@ -26,13 +26,15 @@ public:
 	void reset();
 	unsigned getFitness();
 	sf::Vector2f getPipeDistance(std::vector<RenderObject*> pipes);
+	std::vector<std::vector<std::vector<float>>> getWeights();
+	//std::vector<std::vector<float>> getBias();
 
 	//game functions
 	void render(sf::RenderWindow& w);
 	void update(std::vector<RenderObject*> pipes);
 
 	//ai functions
-	void crossOver();
+	void crossOver(std::vector<Bird> population);
 	bool feedForward(std::vector<RenderObject*> pipes);
 	void genRandomNetwork();
 };

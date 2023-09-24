@@ -129,6 +129,11 @@ void Game::delObject(int index)
 	this->genericObjects.erase(this->genericObjects.begin() + index);
 }
 
+void Game::clearGenericObjects()
+{
+	this->genericObjects.clear();
+}
+
 RenderObject* Game::getObject(std::string name)
 {
 	if (this->uniqueObjects.count(name))

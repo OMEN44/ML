@@ -2,12 +2,13 @@
 
 FlappyBirdGame::FlappyBirdGame(std::string title, int frameRateLimit)
 	: Game(title, frameRateLimit),
-	population(100)
+	population(50)
 {
 }
 
 void FlappyBirdGame::start()
 {
+	addObject(new Pipe(200));
 }
 
 void FlappyBirdGame::beforeUpdate()
@@ -36,6 +37,9 @@ void FlappyBirdGame::beforeUpdate()
 	else
 	{
 		this->population.reset();
+		this->clearGenericObjects();
+		this->level = 0;
+		this->wallGenBuffer = 175;
 	}
 }
 

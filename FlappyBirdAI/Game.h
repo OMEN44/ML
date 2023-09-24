@@ -73,6 +73,7 @@ public:
 	void addObject(RenderObject* object);
 	void delObject(std::string name);
 	void delObject(int index);
+	void clearGenericObjects();
 	RenderObject* getObject(std::string name);
 	RenderObject* getObject(int index);
 	std::vector<RenderObject*> getGenericObjects();
